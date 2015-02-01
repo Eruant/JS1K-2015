@@ -1,0 +1,1 @@
+var hyperTrain=function(){this.clear()};hyperTrain.prototype.clear=function(){c.fillRect(0,0,a.width,a.height)};new hyperTrain;

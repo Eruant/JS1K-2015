@@ -1,0 +1,15 @@
+{
+  "name": "js1k",
+  "version": "0.0.1",
+  "dependencies": {
+    "live-server": "^0.6.3",
+    "uglify-js": "^2.4.16"
+  },
+  "scripts": {
+    "compress": "uglifyjs src/raw.js -o compressed.js",
+    "concat": "cat src/top.html compressed.js src/bottom.html > index.html",
+    "build": "npm run compress && npm run concat",
+    "test": "[[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || echo 'Perfect'",
+    "start": "npm run compress && [[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || npm run concat && live-server"
+  }
+}
