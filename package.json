@@ -10,6 +10,7 @@
     "concat": "cat src/top.html compressed.js src/bottom.html > index.html",
     "build": "npm run compress && npm run concat",
     "test": "[[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || echo 'Perfect'",
-    "start": "npm run compress && [[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || npm run concat && live-server"
+    "start": "npm run compress && [[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || npm run concat && live-server",
+    "size": "du -k compressed.js"
   }
 }
