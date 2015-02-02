@@ -10,15 +10,17 @@
 
 (function (a, b, c) {
 
-    var tileSize = 32;
-    var halfTileSize = tileSize * 0.5;
-    var strokeWidth = tileSize * 0.2;
+    var d = 32,
+        e = 16,
+        f = 4;
+
+    // continue to reduce size
 
     var colors = {
         b: '#000',
         f: '#fff',
-        vf: c.createLinearGradient(0, 0, 0, halfTileSize),
-        hf: c.createLinearGradient(0, 0, halfTileSize, 0)
+        vf: c.createLinearGradient(0, 0, 0, e),
+        hf: c.createLinearGradient(0, 0, e, 0)
     };
 
     colors.vf.addColorStop('0', '#000');
@@ -125,49 +127,49 @@
             switch (map.data[i]) {
 
                 // corners
-                case 1:  this.drawTrackType(x, y, 2, 0); break;
-                case 2:  this.drawTrackType(x, y, 2, 1); break;
-                case 3:  this.drawTrackType(x, y, 2, 2); break;
-                case 4:  this.drawTrackType(x, y, 2, 3); break;
+                case 1:  this.dtt(x, y, 2, 0); break;
+                case 2:  this.dtt(x, y, 2, 1); break;
+                case 3:  this.dtt(x, y, 2, 2); break;
+                case 4:  this.dtt(x, y, 2, 3); break;
 
                 // straights
-                case 5:  this.drawTrackType(x, y, 1, 0); break;
-                case 6:  this.drawTrackType(x, y, 1, 1); break;
+                case 5:  this.dtt(x, y, 1, 0); break;
+                case 6:  this.dtt(x, y, 1, 1); break;
 
                 // points
-                case 7:  this.drawTrackType(x, y, 3, 0); break;
-                case 8:  this.drawTrackType(x, y, 3, 1); break;
-                case 9:  this.drawTrackType(x, y, 3, 2); break;
-                case 10: this.drawTrackType(x, y, 3, 3); break;
+                case 7:  this.dtt(x, y, 3, 0); break;
+                case 8:  this.dtt(x, y, 3, 1); break;
+                case 9:  this.dtt(x, y, 3, 2); break;
+                case 10: this.dtt(x, y, 3, 3); break;
 
                 // joins
-                case 11: this.drawTrackType(x, y, 4, 0); break;
-                case 12: this.drawTrackType(x, y, 4, 1); break;
-                case 13: this.drawTrackType(x, y, 4, 2); break;
-                case 14: this.drawTrackType(x, y, 4, 3); break;
+                case 11: this.dtt(x, y, 4, 0); break;
+                case 12: this.dtt(x, y, 4, 1); break;
+                case 13: this.dtt(x, y, 4, 2); break;
+                case 14: this.dtt(x, y, 4, 3); break;
 
                 // points (closed)
-                case 15: this.drawTrackType(x, y, 5, 0); break;
-                case 16: this.drawTrackType(x, y, 5, 1); break;
-                case 17: this.drawTrackType(x, y, 5, 2); break;
-                case 18: this.drawTrackType(x, y, 5, 3); break;
+                case 15: this.dtt(x, y, 5, 0); break;
+                case 16: this.dtt(x, y, 5, 1); break;
+                case 17: this.dtt(x, y, 5, 2); break;
+                case 18: this.dtt(x, y, 5, 3); break;
             }
 
-            x += tileSize;
+            x += d;
 
             if ((i + 1) % map.width === 0) {
                 x = 0;
-                y += tileSize;
+                y += d;
             }
         }
     };
 
-    hyperTrain.prototype.drawTrackType = function (x, y, type, version) {
+    hyperTrain.prototype.dtt = function (x, y, type, version) {
 
         c.strokeStyle = colors.f;
-        c.lineWidth = strokeWidth;
+        c.lineWidth = f;
         c.save();
-        c.translate(x + halfTileSize, y + halfTileSize);
+        c.translate(x + e, y + e);
         c.beginPath();
 
         switch (version) {
@@ -179,13 +181,13 @@
         switch (type) {
             // straights
             case 1:
-                c.moveTo(-halfTileSize, 0);
-                c.lineTo(halfTileSize, 0);
+                c.moveTo(-e, 0);
+                c.lineTo(e, 0);
                 break;
             // corners
             case 2:
-                c.moveTo(-halfTileSize, 0);
-                c.bezierCurveTo(-halfTileSize, 0, 0, 0, 0, halfTileSize);
+                c.moveTo(-e, 0);
+                c.bezierCurveTo(-e, 0, 0, 0, 0, e);
                 break;
             // points
             case 3:
@@ -195,23 +197,23 @@
                 } else if (type === 4) {
                     c.scale(-1, 1);
                 }
-                c.moveTo(-halfTileSize, 0);
-                c.bezierCurveTo(-halfTileSize, 0, 0, 0, 0, halfTileSize);
+                c.moveTo(-e, 0);
+                c.bezierCurveTo(-e, 0, 0, 0, 0, e);
                 c.stroke();
                 c.strokeStyle = colors.f;
                 c.beginPath();
-                c.moveTo(-halfTileSize, 0);
-                c.lineTo(halfTileSize, 0);
+                c.moveTo(-e, 0);
+                c.lineTo(e, 0);
                 break;
             case 5:
                 c.strokeStyle = colors.hf;
-                c.moveTo(-halfTileSize, 0);
-                c.lineTo(halfTileSize, 0);
+                c.moveTo(-e, 0);
+                c.lineTo(e, 0);
                 c.stroke();
                 c.strokeStyle = colors.f;
                 c.beginPath();
-                c.moveTo(-halfTileSize, 0);
-                c.bezierCurveTo(-halfTileSize, 0, 0, 0, 0, halfTileSize);
+                c.moveTo(-e, 0);
+                c.bezierCurveTo(-e, 0, 0, 0, 0, e);
                 break;
         }
 
