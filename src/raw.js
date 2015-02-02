@@ -17,16 +17,21 @@
     var colors = {
         b: '#000',
         f: '#fff',
-        gf: c.createLinearGradient(0, 0, 0, halfTileSize)
+        vf: c.createLinearGradient(0, 0, 0, halfTileSize),
+        hf: c.createLinearGradient(0, 0, halfTileSize, 0)
     };
 
-    colors.gf.addColorStop('0', '#000');
-    colors.gf.addColorStop('1', '#fff');
+    colors.vf.addColorStop('0', '#000');
+    colors.vf.addColorStop('1', '#fff');
+    colors.hf.addColorStop('0', '#000');
+    colors.hf.addColorStop('1', '#fff');
 
     /**
-     * corners [1, 2, 3, 4]
-     * straights [5, 6]
-     * points [7, 8, 9, 10]
+     * points:
+     * 7 = 15
+     * 8 = 16
+     * 9 = 17
+     * 10 = 18
      */
 
     var map = {
@@ -34,9 +39,9 @@
         data: [
             4,  5,  5,  5, 11,  5,  7,  5,  5,  1,
             6,  0,  0,  0,  6,  0,  6,  0,  0,  6,
-            10, 5,  5,  5,  2,  0,  3,  1,  0,  6,
-            6,  0,  0,  0,  0,  0,  0,  3,  5, 12,
-            14, 5,  5,  5,  5,  1,  0,  0,  0,  6,
+            18, 5, 11,  5,  2,  0,  3,  1,  0,  6,
+            6,  0,  6,  0,  0,  0,  0,  3,  5, 12,
+            14, 5, 17,  5,  5,  1,  0,  0,  0,  6,
             6,  0,  0,  0,  0,  3,  5,  5,  5,  8,
             14, 5,  5,  1,  0,  0,  0,  0,  0,  6,
             6,  0,  0,  6,  0,  0,  4,  5,  5,  2,
@@ -55,7 +60,15 @@
     };
 
     var hyperTrain = function () {
+
+        var self = this;
+
         this.clear();
+
+        window.addEventListener('click', function () {
+            self.flipTrack();
+        }, false);
+
         this.tick();
     };
 
@@ -72,6 +85,25 @@
     };
 
     hyperTrain.prototype.update = function () {
+    };
+
+    hyperTrain.prototype.flipTrack = function () {
+
+        var i = 0,
+            len = map.data.length;
+
+        for (; i < len; i++) {
+            switch (map.data[i]) {
+                case  7: map.data[i] = 15; break;
+                case  8: map.data[i] = 16; break;
+                case  9: map.data[i] = 17; break;
+                case 10: map.data[i] = 18; break;
+                case 15: map.data[i] =  7; break;
+                case 16: map.data[i] =  8; break;
+                case 17: map.data[i] =  9; break;
+                case 18: map.data[i] = 10; break;
+            }
+        }
     };
 
     hyperTrain.prototype.draw = function () {
@@ -113,6 +145,12 @@
                 case 12: this.drawTrackType(x, y, 4, 1); break;
                 case 13: this.drawTrackType(x, y, 4, 2); break;
                 case 14: this.drawTrackType(x, y, 4, 3); break;
+
+                // points (closed)
+                case 15: this.drawTrackType(x, y, 5, 0); break;
+                case 16: this.drawTrackType(x, y, 5, 1); break;
+                case 17: this.drawTrackType(x, y, 5, 2); break;
+                case 18: this.drawTrackType(x, y, 5, 3); break;
             }
 
             x += tileSize;
@@ -153,8 +191,8 @@
             case 3:
             case 4:
                 if (type === 3) {
-                    c.strokeStyle = colors.gf;
-                } else {
+                    c.strokeStyle = colors.vf;
+                } else if (type === 4) {
                     c.scale(-1, 1);
                 }
                 c.moveTo(-halfTileSize, 0);
@@ -165,6 +203,16 @@
                 c.moveTo(-halfTileSize, 0);
                 c.lineTo(halfTileSize, 0);
                 break;
+            case 5:
+                c.strokeStyle = colors.hf;
+                c.moveTo(-halfTileSize, 0);
+                c.lineTo(halfTileSize, 0);
+                c.stroke();
+                c.strokeStyle = colors.f;
+                c.beginPath();
+                c.moveTo(-halfTileSize, 0);
+                c.bezierCurveTo(-halfTileSize, 0, 0, 0, 0, halfTileSize);
+                break;
         }
 
         c.stroke();
@@ -172,9 +220,6 @@
     };
 
     // TODO draw methods
-    // - track (horizontal, vertical, corners)
-    // - points left (horizontal, vertical)
-    // - points right (horizontal, vertical)
     // - train (horizontal, vertical, corners);
 
     new hyperTrain();
