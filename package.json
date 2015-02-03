@@ -11,6 +11,6 @@
     "build": "npm run compress && npm run concat",
     "test": "[[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || echo 'Perfect'",
     "start": "npm run compress && [[ $(find compressed.js -type f -size +1024c 2>/dev/null) ]] && echo 'Too big' || npm run concat && live-server",
-    "size": "du -k compressed.js"
+    "size": "du -h compressed.js"
   }
 }
